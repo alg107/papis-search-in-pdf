@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 import papis.api as p
+import papis
 import os.path
 from pdfminer.high_level import extract_text
 from fuzzysearch import find_near_matches
 from sys import argv
+import click
 
-lib = 'papers'
+lib = p.get_lib_name()
+
 
 def gen_texts(lib='papers'):
     # At some point use hashes to check if text needs updating
@@ -35,15 +38,24 @@ def doc_matches(sstr, doc):
 
 def search(sstr, lib=lib):
     docs = p.get_all_documents_in_lib(lib)
-    filtered = list(filter(lambda x: doc_matches(sstr,x), docs))
+    filtered = []
+    if sstr != ".":
+        filtered = list(filter(lambda x: doc_matches(sstr,x), docs))
+    else:
+        filtered = docs 
     picked = p.pick_doc(filtered)[0]
     p.open_file(picked.get_files()[0])
     return picked
     
+@click.command()
+@click.help_option('-h', '--help')
+@papis.cli.query_option()
+def main(query):
+    """
+    Search in PDFs of a library
+    """
+    gen_texts()
+    search(query)
 
 if __name__ == "__main__":
-    if len(argv) == 1:
-        picked = p.pick_doc(p.get_all_documents_in_lib(lib))
-        p.open_file(picked.get_files()[0])
-    gen_texts()
-    search(argv[1])
+    main()
