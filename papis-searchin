@@ -9,8 +9,7 @@ import click
 
 lib = p.get_lib_name()
 
-
-def gen_texts(lib='papers'):
+def gen_texts():
     # At some point use hashes to check if text needs updating
     # Or at least check for existing text.txt
     docs = p.get_all_documents_in_lib(lib)

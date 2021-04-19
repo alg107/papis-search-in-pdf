@@ -1,3 +1,2 @@
-mkdir ~/.papis
-mkdir ~/.papis/scripts
-cp papis-searchin ~/.papis/scripts
+mkdir ~/.config/papis/scripts
+cp papis-searchin ~/.config/papis/scripts
