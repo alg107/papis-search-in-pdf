@@ -13,6 +13,7 @@ def gen_texts():
     # At some point use hashes to check if text needs updating
     # Or at least check for existing text.txt
     docs = p.get_all_documents_in_lib(lib)
+    docs = list(filter(lambda x: len(x.get_files())>0, docs))
     for doc in docs:
         fname = doc.get_files()[0]
         folder = doc.get_main_folder()
@@ -37,6 +38,7 @@ def doc_matches(sstr, doc):
 
 def search(sstr, lib=lib):
     docs = p.get_all_documents_in_lib(lib)
+    docs = list(filter(lambda x: len(x.get_files())>0, docs))
     filtered = []
     if sstr != ".":
         filtered = list(filter(lambda x: doc_matches(sstr,x), docs))
